@@ -17,4 +17,5 @@ assign(Base.prototype, {
   }
 });
 
+
 module.exports = Base;
