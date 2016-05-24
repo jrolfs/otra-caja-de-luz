@@ -30,5 +30,8 @@
         "es2015-node6"
       ]
     }
+  },
+  "dependencies": {
+    "object-assign": "^4.1.0"
   }
 }

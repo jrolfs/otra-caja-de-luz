@@ -1,3 +1,6 @@
+var assign = require('object-assign');
+
+
 function Base(options) {
   options || (options = {});
 
@@ -6,7 +9,7 @@ function Base(options) {
   this.createNode();
 };
 
-Object.assign(Base.prototype, {
+assign(Base.prototype, {
   createNode: function () {
     this.node = document.createElement(this.nodeName);
 
