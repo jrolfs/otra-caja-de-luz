@@ -1,10 +1,16 @@
 function Base(options) {
-  this.test = options.test;
+  options || (options = {});
+
+  this.nodeName = options.nodeName || this.nodeName || 'div';
+
+  this.createNode();
 };
 
 Object.assign(Base.prototype, {
-  getTest: function () {
-    return this.test;
+  createNode: function () {
+    this.node = document.createElement(this.nodeName);
+
+    return this;
   }
 });
 
