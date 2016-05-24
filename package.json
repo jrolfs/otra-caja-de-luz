@@ -1,0 +1,34 @@
+{
+  "name": "otra-caja-de-luz",
+  "version": "0.0.1",
+  "description": "Other box of light",
+  "main": "index.js",
+  "scripts": {
+    "test": "gulp test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://gitlab.rolfs.io/jrolfs/otra-caja-de-luz"
+  },
+  "author": "Jamie Rolfs",
+  "license": "MIT",
+  "devDependencies": {
+    "babel-preset-es2015-node6": "^0.2.0",
+    "gulp": "^3.9.1",
+    "gulp-ava": "^0.11.0",
+    "jsdom": "^9.1.0"
+  },
+  "ava": {
+    "source": [
+      "src/javascript/**/*.js"
+    ],
+    "require": [
+      "./test/helpers/browser-environment.js"
+    ],
+    "babel": {
+      "presets": [
+        "es2015-node6"
+      ]
+    }
+  }
+}
