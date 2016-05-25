@@ -13,9 +13,10 @@
   "author": "Jamie Rolfs",
   "license": "MIT",
   "devDependencies": {
-    "babel-preset-es2015-node6": "^0.2.0",
+    "babel-preset-es2015-node": "^6.0.1",
     "gulp": "^3.9.1",
     "gulp-ava": "^0.11.0",
+    "gulp-plumber": "^1.1.0",
     "jsdom": "^9.1.0"
   },
   "ava": {
@@ -27,7 +28,8 @@
     ],
     "babel": {
       "presets": [
-        "es2015-node6"
+        "es2015-node",
+        "stage-2"
       ]
     }
   },
