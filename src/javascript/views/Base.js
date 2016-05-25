@@ -13,6 +13,10 @@ assign(Base.prototype, {
   createNode: function () {
     this.node = document.createElement(this.nodeName);
 
+    if (this.node instanceof window.HTMLUnknownElement) {
+      throw new Error('Invalid nodeName provided');
+    }
+
     return this;
   }
 });
