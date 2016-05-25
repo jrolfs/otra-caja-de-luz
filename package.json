@@ -13,6 +13,7 @@
   "author": "Jamie Rolfs",
   "license": "MIT",
   "devDependencies": {
+    "ava-spec": "^1.0.0",
     "babel-preset-es2015-node": "^6.0.1",
     "gulp": "^3.9.1",
     "gulp-ava": "^0.11.0",

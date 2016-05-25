@@ -1,22 +1,25 @@
-import test from 'ava';
+import { describe } from 'ava-spec';
 
 import Base from '../../src/javascript/views/Base';
 
 
-test('assigns "nodeName" from options', t => {
-  const base = new Base({ nodeName: 'li' });
+describe('base/View', it => {
 
-  t.is(base.nodeName, 'li');
-});
+  it('assigns "nodeName" from options', t => {
+    const base = new Base({ nodeName: 'li' });
 
-test('defaults "nodeName" to "div"', t => {
-  const base = new Base();
+    t.is(base.nodeName, 'li');
+  });
 
-  t.is(base.nodeName, 'div');
-});
+  it('defaults "nodeName" to "div"', t => {
+    const base = new Base();
 
-test('creates root node', t => {
-  const base = new Base();
+    t.is(base.nodeName, 'div');
+  });
 
-  t.true(base.node instanceof window.HTMLDivElement);
+  it('creates root node', t => {
+    const base = new Base();
+
+    t.true(base.node instanceof window.HTMLDivElement);
+  });
 });
