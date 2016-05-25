@@ -2,11 +2,7 @@
   "parser": "babel-eslint",
   "env": {
     "browser": true,
-    "node": true,
-    "es6": true
-  },
-  "ecmaFeatures": {
-    "templateStrings": true,
+    "node": true
   },
   "rules": {
     "strict": [0],
