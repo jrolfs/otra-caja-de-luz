@@ -4,7 +4,12 @@
     "browser": true,
     "node": true
   },
+  "plugins": [
+    "ava"
+  ],
+  "extends": "plugin:ava/recommended",
   "rules": {
+    "ava/use-test": 0,
     "strict": [0],
     "brace-style": [1, "1tbs", {"allowSingleLine": true}],
     "camelcase": 1,
