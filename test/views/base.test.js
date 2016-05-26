@@ -3,8 +3,9 @@ import { describe } from 'ava-spec';
 import Base from '../../src/javascript/views/Base';
 import EventEmitter from '../../src/javascript/mixins/EventEmitter';
 
+const subject = 'base/View';
 
-describe('base/View', it => {
+describe(`${subject} mixins`, it => {
 
   it('mixes in EventEmitter', t => {
     const base = new Base();
@@ -15,6 +16,9 @@ describe('base/View', it => {
       t.is(base[method], EventEmitter[method]);
     }
   });
+});
+
+describe(`${subject} initialization`, it => {
 
   it('assigns "nodeName" from options', t => {
     const base = new Base({ nodeName: 'li' });
