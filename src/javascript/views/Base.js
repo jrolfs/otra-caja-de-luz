@@ -1,5 +1,7 @@
 var assign = require('object-assign');
 
+var EventEmitter = require('../mixins/EventEmitter');
+
 
 function Base(options) {
   options || (options = {});
@@ -8,6 +10,8 @@ function Base(options) {
 
   this.createNode();
 };
+
+assign(Base.prototype, EventEmitter);
 
 assign(Base.prototype, {
   createNode: function () {

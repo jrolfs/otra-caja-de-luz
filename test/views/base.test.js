@@ -1,9 +1,20 @@
 import { describe } from 'ava-spec';
 
 import Base from '../../src/javascript/views/Base';
+import EventEmitter from '../../src/javascript/mixins/EventEmitter';
 
 
 describe('base/View', it => {
+
+  it('mixes in EventEmitter', t => {
+    const base = new Base();
+
+    t.plan(Object.keys(EventEmitter).length);
+
+    for (let method in EventEmitter) {
+      t.is(base[method], EventEmitter[method]);
+    }
+  });
 
   it('assigns "nodeName" from options', t => {
     const base = new Base({ nodeName: 'li' });
