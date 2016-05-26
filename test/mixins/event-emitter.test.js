@@ -72,7 +72,7 @@ describe('mixins/EventEmitter', it => {
     });
   });
 
-  describe('#off', function() {
+  describe('#off', it => {
     it('removes all events by an eventName when no callback is provided', t => {
       const emitter = t.context.emitter;
       const [callback1, callback2, callback3] = t.context.callbacks;
@@ -123,7 +123,7 @@ describe('mixins/EventEmitter', it => {
     });
   });
 
-  return describe('trigger', function() {
+  describe('#trigger', it => {
     it('triggers callbacks in the order that they were registered', t => {
       const emitter = t.context.emitter;
       const [callback1, callback2, callback3] = t.context.callbacks;
