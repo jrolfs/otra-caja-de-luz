@@ -74,7 +74,7 @@
     "no-unreachable": 1,
     "no-use-before-define": [1, "nofunc"],
     "no-warning-comments": [0, {"terms": ["todo", "fixme"]}],
-    "no-extra-parens": 1,
+    "no-extra-parens": 0,
     "quotes": [1, "single", "avoid-escape"],
     "quote-props": [0, "as-needed"],
     "radix": 1,
