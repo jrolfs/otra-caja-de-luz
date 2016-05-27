@@ -6,7 +6,7 @@ import EventEmitter from '../../src/javascript/mixins/EventEmitter';
 
 
 const describe = test.describe;
-const subject = 'mixins/EventEmitter'
+const subject = 'mixins/EventEmitter';
 
 test.beforeEach(t => {
   let TestConstructor = function () {};
