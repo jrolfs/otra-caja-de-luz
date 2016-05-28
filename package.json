@@ -13,10 +13,10 @@
   "author": "Jamie Rolfs",
   "license": "MIT",
   "devDependencies": {
-    "ava-spec": "^1.0.0",
+    "ava-spec": "^1.0.1",
     "babel-preset-es2015-node": "^6.0.1",
     "gulp": "^3.9.1",
-    "gulp-ava": "^0.11.0",
+    "gulp-ava": "^0.12.0",
     "gulp-plumber": "^1.1.0",
     "jsdom": "^9.1.0",
     "sinon": "^1.17.4"
