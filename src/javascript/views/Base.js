@@ -32,7 +32,13 @@ assign(Base.prototype, {
   },
 
   render: function () {
-    this.node.innerHtml = this.template.call(escapeObject(this.data));
+    var templateParts = this.template.call(escapeObject(this.data));
+
+    if (!Array.isArray(templateParts)) {
+      throw new Error('Template function must return an array');
+    }
+
+    this.node.innerHTML = templateParts.join('');
 
     if (typeof this.addChildren === 'function') {
       this.children = this.addChildren();
