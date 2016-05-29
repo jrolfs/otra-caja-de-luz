@@ -1,19 +1,26 @@
-import { describe } from 'ava-spec';
+import test from 'ava-spec';
 
 import Base from '../../src/javascript/views/Base';
 import EventEmitter from '../../src/javascript/mixins/EventEmitter';
 
+
+const describe = test.describe;
 const subject = 'base/View';
+
+test.beforeEach(t => {
+  t.context.build = (options = {}) => {
+    return new Base(options);
+  };
 
 describe(`${subject} mixins`, it => {
 
   it('mixes in EventEmitter', t => {
-    const base = new Base();
+    const view = t.context.build();
 
     t.plan(Object.keys(EventEmitter).length);
 
     for (let method in EventEmitter) {
-      t.is(base[method], EventEmitter[method]);
+      t.is(view[method], EventEmitter[method]);
     }
   });
 });
@@ -21,31 +28,31 @@ describe(`${subject} mixins`, it => {
 describe(`${subject} initialization`, it => {
 
   it('assigns "nodeName" from options', t => {
-    const base = new Base({ nodeName: 'li' });
+    const view = t.context.build({ nodeName: 'li' });
 
-    t.is(base.nodeName, 'li');
+    t.is(view.nodeName, 'li');
   });
 
   it('defaults "nodeName" to "div"', t => {
-    const base = new Base();
+    const view = t.context.build();
 
-    t.is(base.nodeName, 'div');
+    t.is(view.nodeName, 'div');
   });
 
   it('creates root node', t => {
-    const base = new Base();
+    const view = t.context.build();
 
-    t.true(base.node instanceof window.HTMLDivElement);
+    t.true(view.node instanceof window.HTMLDivElement);
   });
 
   it('creates root node using custom "nodeName"', t => {
-    const base = new Base({ nodeName: 'span' });
+    const view = t.context.build({ nodeName: 'span' });
 
-    t.true(base.node instanceof window.HTMLSpanElement);
+    t.true(view.node instanceof window.HTMLSpanElement);
   });
 
   it('throws an error when custom "nodeName" is invalid', async t => {
-    const error = await t.throws(function () { new Base({ nodeName: 'invalid' }); });
+    const error = await t.throws(function () { t.context.build({ nodeName: 'invalid' }); });
 
     t.true(/invalid nodeName/i.test(error.message));
   });
