@@ -149,14 +149,9 @@ describe(`${subject} event handling`, it => {
           click: this.onClick
         };
       },
-      onKeyUp: function (event)  {},
-      onClick: function (event)  {}
-    });
-
-    sinon.spy(view, 'onKeyUp');
-    sinon.spy(view, 'onClick');
-
-    view.render();
+      onKeyUp: sinon.spy(),
+      onClick: sinon.spy()
+    }).render();
 
     simulant.fire(view.node, 'keyup');
     simulant.fire(view.node, 'click');
@@ -189,14 +184,9 @@ describe(`${subject} event handling`, it => {
           mouseover: { id: 'hover-bar', listener: this.onBarMouseover }
         };
       },
-      onFooClick: function () {},
-      onBarMouseover: function () {}
-    });
-
-    sinon.spy(view, 'onFooClick');
-    sinon.spy(view, 'onBarMouseover');
-
-    view.render();
+      onFooClick: sinon.spy(),
+      onBarMouseover: sinon.spy()
+    }).render();
 
     const baz = view.node.getElementsByClassName('baz')[0];
 
