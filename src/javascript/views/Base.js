@@ -88,6 +88,14 @@ assign(Base.prototype, {
     }
 
     return this;
+  },
+
+  remove: function () {
+    if (typeof this.node.remove === 'function') {
+      this.node.remove();
+    } else if (this.node.parentNode) {
+      this.node.parentNode.removeChild(this.node);
+    }
   }
 });
 
