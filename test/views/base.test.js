@@ -1,4 +1,6 @@
 import test from 'ava-spec';
+import sinon from 'sinon';
+import simulant from 'simulant';
 
 import Base from '../../src/javascript/views/Base';
 import EventEmitter from '../../src/javascript/mixins/EventEmitter';
@@ -135,4 +137,78 @@ describe(`${subject} templating`, it => {
 
     t.throws(() => view.render(), /must\sreturn.*array/);
   });
+});
+
+describe(`${subject} event handling`, it => {
+
+  it('handles events on bound to root node', t => {
+    const view = t.context.extend({
+      listeners: function () {
+        return {
+          keyup: this.onKeyUp,
+          click: this.onClick
+        };
+      },
+      onKeyUp: function (event)  {},
+      onClick: function (event)  {}
+    });
+
+    sinon.spy(view, 'onKeyUp');
+    sinon.spy(view, 'onClick');
+
+    view.render();
+
+    simulant.fire(view.node, 'keyup');
+    simulant.fire(view.node, 'click');
+
+    t.true(view.onKeyUp.calledOnce);
+    t.true(view.onClick.calledOnce);
+  });
+
+  it('binds listeners on root node to instance context', t => {
+    const view = t.context.extend({
+      listeners: function () { return { keyup: this.onKeyUp }; },
+      onKeyUp: function (event)  {
+        t.is(this, view);
+      }
+    }).render();
+
+    simulant.fire(view.node, 'keyup');
+  });
+
+  it('handles events on bound to child nodes', t => {
+    const view = t.context.extend({
+      template: () => [
+        '<div class="foo" data-event-id="click-foo">Foo</div>',
+        '<span class="bar" data-event-id="hover-bar">Bar</span>',
+        '<span class="baz">Bar</span>'
+      ],
+      listeners: function () {
+        return {
+          click: { id: 'click-foo', listener: this.onFooClick },
+          mouseover: { id: 'hover-bar', listener: this.onBarMouseover }
+        };
+      },
+      onFooClick: function () {},
+      onBarMouseover: function () {}
+    });
+
+    sinon.spy(view, 'onFooClick');
+    sinon.spy(view, 'onBarMouseover');
+
+    view.render();
+
+    const baz = view.node.getElementsByClassName('baz')[0];
+
+    simulant.fire(view.node, 'click');
+    simulant.fire(view.node, 'mouseover');
+    simulant.fire(baz, 'click');
+    simulant.fire(baz, 'mouseover');
+    simulant.fire(view.node.getElementsByClassName('foo')[0], 'click');
+    simulant.fire(view.node.getElementsByClassName('bar')[0], 'mouseover');
+
+    t.true(view.onFooClick.calledOnce);
+    t.true(view.onBarMouseover.calledOnce);
+  });
+
 });

@@ -11,6 +11,8 @@ function Base(options) {
   this.data = options.data || {};
   this.children = [];
 
+  this._handlers = [];
+
   this.createNode();
 };
 
@@ -27,6 +29,46 @@ assign(Base.prototype, {
     return this;
   },
 
+  bindListeners: function () {
+    var listeners = this.listeners();
+    var delegate = function (eventId, handler) {
+      return function (event) {
+        if (event.target.dataset.eventId !== eventId) return;
+
+        handler.apply(this, arguments);
+      };
+    };
+
+    for (var event in listeners) {
+      var descriptor = listeners[event];
+      var handler;
+
+      if (typeof descriptor === 'function') {
+        handler = descriptor.bind(this);
+      } else {
+        if (typeof descriptor.id !== 'string' || typeof descriptor.listener !== 'function') {
+          throw new Error('You must supply a valid event ID and listener when delegating events');
+        }
+
+        handler = delegate.bind(this, descriptor.id, descriptor.listener)();
+      }
+
+      this.node.addEventListener(event, handler);
+      this._handlers.push({ event: event, handler: handler });
+    }
+  },
+
+  unbindListeners: function () {
+    while (this._handlers.length) {
+      var handler = this._handlers.pop();
+      this.node.removeEventListener(handler.event, handler.handler);
+    }
+  },
+
+  listeners: function () {
+    return {};
+  },
+
   template: function () {
     return [];
   },
@@ -40,11 +82,24 @@ assign(Base.prototype, {
 
     this.node.innerHTML = templateParts.join('');
 
+    this.unbindListeners();
+    this.bindListeners();
+
     if (typeof this.addChildren === 'function') {
       this.children = this.addChildren();
     }
 
     return this;
+  },
+
+  remove: function () {
+    this.unbindListeners();
+
+    if (typeof this.node.remove === 'function') {
+      this.node.remove();
+    } else if (this.parentNode) {
+      this.parentNode.removeChild(this);
+    }
   }
 });
 
