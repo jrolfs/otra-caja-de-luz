@@ -135,7 +135,7 @@ describe(`${subject} templating`, it => {
   it('throws an error when #template does not return an array', t => {
     const view = t.context.extend({ template: () => { 'not-template'; } });
 
-    t.throws(() => view.render(), /must\sreturn.*array/);
+    t.throws(() => view.render(), /must\sreturn.*array/i);
   });
 });
 
