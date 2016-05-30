@@ -14,6 +14,7 @@ function Base(options) {
   this._handlers = [];
 
   this.createNode();
+  this.bindListeners();
 };
 
 assign(Base.prototype, EventEmitter);
@@ -81,9 +82,6 @@ assign(Base.prototype, {
     }
 
     this.node.innerHTML = templateParts.join('');
-
-    this.unbindListeners();
-    this.bindListeners();
 
     if (typeof this.addChildren === 'function') {
       this.children = this.addChildren();
