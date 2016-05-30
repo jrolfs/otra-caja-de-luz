@@ -12,6 +12,8 @@ function Base(options) {
   this.children = [];
 
   this._handlers = [];
+  this._children = [];
+  this._bindings = [];
 
   this.createNode();
   this.bindListeners();
@@ -84,14 +86,18 @@ assign(Base.prototype, {
     this.node.innerHTML = templateParts.join('');
 
     if (typeof this.addChildren === 'function') {
-      this.children = this.addChildren();
+      this._children = this.addChildren();
     }
 
     return this;
   },
 
+  removeChildren: function () {
+    while (this._children.length) this._children.pop().remove();
+  },
+
   remove: function () {
-    this.unbindListeners();
+    this.removeChildren();
 
     if (typeof this.node.remove === 'function') {
       this.node.remove();

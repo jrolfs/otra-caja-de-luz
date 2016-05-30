@@ -256,4 +256,48 @@ describe(`${subject} removal`, it => {
 
     assertRemoval(t, view);
   });
+
+  it('removes any children', t => {
+    const view = t.context.extend({
+      addChildren: function () {
+        var child1 = this.child1 = new Base().render();
+        var child2 = this.child2 = new Base().render();
+
+        sinon.spy(child1, 'remove');
+        sinon.spy(child2, 'remove');
+
+        this.node.appendChild(child1.node);
+        this.node.appendChild(child2.node);
+
+        return [child1, child2];
+      }
+    }).render();
+
+    view.remove();
+
+    t.is(view._children.length, 0);
+    t.true(view.child1.remove.calledOnce);
+    t.true(view.child2.remove.calledOnce);
+  });
+});
+
+describe(`${subject} children`, it => {
+
+  it('stores children returned from addChildren', t => {
+    const view = t.context.extend({
+      addChildren: function () {
+        var child1 = this.child1 = new Base().render();
+        var child2 = this.child2 = new Base().render();
+
+        this.node.appendChild(child1.node);
+        this.node.appendChild(child2.node);
+
+        return [child1, child2];
+      }
+    }).render();
+
+    t.is(view._children.length, 2);
+    t.is(view._children[0], view.child1);
+    t.is(view._children[1], view.child2);
+  });
 });
