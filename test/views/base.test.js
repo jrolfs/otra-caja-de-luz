@@ -201,4 +201,14 @@ describe(`${subject} event handling`, it => {
     t.true(view.onBarMouseover.calledOnce);
   });
 
+  it('passes event to handlers bound to child nodes', t => {
+    const view = t.context.extend({
+      template: () => [ '<div class="foo" data-event-id="click-foo">Foo</div>'],
+      listeners: function () {
+        return { click: { id: 'click-foo', listener: this.onFooClick } };
+      },
+      onFooClick: sinon.spy((event) => {
+        t.true(event instanceof window.Event);
+      })
+    }).render();
 });
