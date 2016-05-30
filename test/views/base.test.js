@@ -211,4 +211,23 @@ describe(`${subject} event handling`, it => {
         t.true(event instanceof window.Event);
       })
     }).render();
+
+    simulant.fire(view.node.getElementsByClassName('foo')[0], 'click');
+  });
+
+  it('throws an error when event id is invalid', t => {
+    t.throws(() => {
+      t.context.extend({
+        listeners: function () { return { click: { id: null } }; }
+      });
+    }, /must.*valid.*event id/i);
+  });
+
+  it('throws an error when event listener is invalid', t => {
+    t.throws(() => {
+      t.context.extend({
+        listeners: function () { return { click: { id: 'foo', listener: this.onFooClick } }; }
+      });
+    }, /must.*valid.*listener/i);
+  });
 });
