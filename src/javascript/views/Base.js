@@ -114,7 +114,7 @@ assign(Base.prototype, {
 
     this._children.forEach(function (child) {
       this.unbind(child);
-    });
+    }, this);
     this.removeChildren();
 
     this.node.innerHTML = templateParts.join('');

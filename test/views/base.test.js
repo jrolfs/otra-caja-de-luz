@@ -14,8 +14,8 @@ test.beforeEach(t => {
     return new Base(options);
   };
 
-  t.context.extend = (prototype, options = {}) => {
-    var ExtendedBase = function (options) {
+  t.context.extend = (prototype, options = {}, constructor) => {
+    var ExtendedBase = constructor || function (options) {
       Base.call(this, options);
     };
 
@@ -140,7 +140,52 @@ describe(`${subject} templating`, it => {
 });
 
 describe(`${subject} rendering`, it => {
-  it.todo('unbinds events from children');
+  it('unbinds events from children', t => {
+    const view = t.context.extend({
+      addChildren: function () {
+        var child1 = this.child1 = new Base().render();
+        var child2 = this.child2 = new Base().render();
+
+        this.bind(child1, 'foo', this.onChildFoo);
+        this.bind(child2, 'bar', this.onChildBar);
+
+        this.node.appendChild(child1.node);
+        this.node.appendChild(child2.node);
+
+        return [child1, child2];
+      },
+      onChildFoo: sinon.spy(),
+      onChildBar: sinon.spy(),
+      onThingChange: sinon.spy()
+    },
+    null,
+    function (options) {
+      Base.call(this, options);
+
+      this.thing = new (Object.assign(function() {}.prototype, EventEmitter)).constructor;
+      this.bind(this.thing, 'change', this.onThingChange);
+    }).render();
+
+    const [firstChild1, firstChild2] = view._children;
+
+    view.thing.trigger('change');
+    firstChild1.trigger('foo');
+    firstChild2.trigger('bar');
+
+    t.true(view.onChildFoo.calledOnce);
+    t.true(view.onChildBar.calledOnce);
+    t.true(view.onThingChange.calledOnce);
+
+    view.render();
+
+    view.thing.trigger('change');
+    firstChild1.trigger('foo');
+    firstChild2.trigger('bar');
+
+    t.true(view.onChildFoo.calledOnce);
+    t.true(view.onChildBar.calledOnce);
+    t.true(view.onThingChange.calledTwice);
+  });
 
   it('adds children if function is defined', t => {
     const view = t.context.extend({ addChildren: sinon.spy() }).render();
