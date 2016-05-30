@@ -95,8 +95,8 @@ assign(Base.prototype, {
 
     if (typeof this.node.remove === 'function') {
       this.node.remove();
-    } else if (this.parentNode) {
-      this.parentNode.removeChild(this);
+    } else if (this.node.parentNode) {
+      this.node.parentNode.removeChild(this.node);
     }
   }
 });

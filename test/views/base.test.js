@@ -231,3 +231,29 @@ describe(`${subject} event handling`, it => {
     }, /must.*valid.*listener/i);
   });
 });
+
+describe(`${subject} removal`, it => {
+
+  const assertRemoval = (t, view) => {
+    document.body.appendChild(view.node);
+    t.is(document.body.children.length, 1);
+
+    view.remove();
+
+    t.is(document.body.children.length, 0);
+  };
+
+  it('removes root node via Element.remove', t => {
+    const view = t.context.build();
+
+    assertRemoval(t, view);
+  });
+
+  it('removes root node when Element.remove does not exist', t => {
+    const view = t.context.build();
+
+    view.node.remove = 'not-implemented';
+
+    assertRemoval(t, view);
+  });
+});
