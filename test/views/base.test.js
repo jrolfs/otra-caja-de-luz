@@ -139,6 +139,16 @@ describe(`${subject} templating`, it => {
   });
 });
 
+describe(`${subject} rendering`, it => {
+  it.todo('unbinds events from children');
+
+  it('adds children if function is defined', t => {
+    const view = t.context.extend({ addChildren: sinon.spy() }).render();
+
+    t.true(view.addChildren.calledOnce);
+  });
+});
+
 describe(`${subject} event handling`, it => {
 
   it('handles events on bound to root node', t => {
@@ -279,6 +289,15 @@ describe(`${subject} removal`, it => {
     t.true(view.child1.remove.calledOnce);
     t.true(view.child2.remove.calledOnce);
   });
+
+  it('unbinds all events', t => {
+    const view = t.context.build();
+
+    sinon.spy(view, 'unbindAll');
+    view.remove();
+
+    t.true(view.unbindAll.calledOnce);
+  });
 });
 
 describe(`${subject} children`, it => {
@@ -299,5 +318,85 @@ describe(`${subject} children`, it => {
     t.is(view._children.length, 2);
     t.is(view._children[0], view.child1);
     t.is(view._children[1], view.child2);
+  });
+});
+
+describe(`${subject} bindings`, it => {
+
+  const buildViewWithBindings = (t) => {
+    return t.context.extend({
+      addChildren: function () {
+        var child1 = this.child1 = new Base().render();
+        var child2 = this.child2 = new Base().render();
+
+        this.bind(child1, 'foo', this.onChildFoo);
+        this.bind(child1, 'bar', this.onChildBar);
+        this.bind(child2, 'baz', this.onChildBaz);
+
+        this.node.appendChild(child1.node);
+        this.node.appendChild(child2.node);
+
+        return [child1, child2];
+      },
+      onChildFoo: sinon.spy(),
+      onChildBar: sinon.spy(),
+      onChildBaz: sinon.spy()
+    }).render();
+  };
+
+  it('binds event to target', t => {
+    const view = buildViewWithBindings(t);
+
+    view.child1.trigger('foo');
+
+    t.true(view.onChildFoo.calledOnce);
+  });
+
+  it('removes event from target when provided event', t => {
+    const view = buildViewWithBindings(t);
+
+    view.unbind(view.child1, 'foo');
+    view.child1.trigger('foo');
+    view.child1.trigger('bar');
+
+    t.false(view.onChildFoo.calledOnce);
+    t.true(view.onChildBar.calledOnce);
+  });
+
+  it('removes event from target when provided event and callback', t => {
+    const view = buildViewWithBindings(t);
+
+    view.unbind(view.child1, 'foo', view.onChildFoo);
+    view.child1.trigger('foo');
+    view.child1.trigger('bar');
+
+    t.false(view.onChildFoo.calledOnce);
+    t.true(view.onChildBar.calledOnce);
+  });
+
+  it('removes all events from target', t => {
+    const view = buildViewWithBindings(t);
+
+    view.unbind(view.child1);
+    view.child1.trigger('foo');
+    view.child1.trigger('bar');
+    view.child2.trigger('baz');
+
+    t.false(view.onChildFoo.calledOnce);
+    t.false(view.onChildBar.calledOnce);
+    t.true(view.onChildBaz.calledOnce);
+  });
+
+  it('unbindAll unbinds all events', t => {
+    const view = buildViewWithBindings(t);
+
+    view.unbindAll();
+    view.child1.trigger('foo');
+    view.child1.trigger('bar');
+    view.child2.trigger('baz');
+
+    t.false(view.onChildFoo.calledOnce);
+    t.false(view.onChildBar.calledOnce);
+    t.false(view.onChildBaz.calledOnce);
   });
 });

@@ -76,12 +76,46 @@ assign(Base.prototype, {
     return [];
   },
 
+  bind: function (target, event, handler) {
+    target.on(event, handler, this);
+
+    this._bindings.push({ target: target, event: event, handler: handler });
+  },
+
+  unbind: function (target, event, handler) {
+    this._bindings = this._bindings.filter(function (binding) {
+      if (binding.target === target) {
+        if (event) {
+          target.off(event, handler);
+        } else if (handler) {
+          target.off(binding.event, handler);
+        } else {
+          target.off(binding.event, binding.handler);
+        }
+      } else {
+        return binding;
+      }
+    });
+  },
+
+  unbindAll: function () {
+    while (this._bindings.length) {
+      var binding = this._bindings.pop();
+      binding.target.off(binding.event);
+    }
+  },
+
   render: function () {
     var templateParts = this.template.call(escapeObject(this.data));
 
     if (!Array.isArray(templateParts)) {
       throw new Error('Template function must return an array');
     }
+
+    this._children.forEach(function (child) {
+      this.unbind(child);
+    });
+    this.removeChildren();
 
     this.node.innerHTML = templateParts.join('');
 
@@ -97,6 +131,7 @@ assign(Base.prototype, {
   },
 
   remove: function () {
+    this.unbindAll();
     this.removeChildren();
 
     if (typeof this.node.remove === 'function') {
