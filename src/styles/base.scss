@@ -44,7 +44,7 @@
 }
 
 .ocdl-lightbox {
-  position: absolute;
+  position: fixed;
   top: 0;
   right: 0;
   bottom: 0;
@@ -55,8 +55,32 @@
   justify-content: center;
 
   .lightbox {
+    position: relative;
     background: white;
     padding: 20px;
+
+    img {
+      max-width: 700px;
+    }
+
+    .name {
+      margin-top: 0;
+      text-align: center;
+    }
+
+    .next, .previous {
+      position: absolute;
+      top: 50%;
+      transform: translate-x(-50%);
+    }
+
+    .next {
+      right: 0;
+    }
+
+    .previous {
+      left: 0;
+    }
   }
 }
 
