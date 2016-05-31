@@ -42,7 +42,7 @@ assign(Base.prototype, {
         if (event.target.dataset.eventId !== eventId) return;
 
         handler.apply(this, arguments);
-      };
+      }.bind(this);
     };
 
     for (var key in listeners) {

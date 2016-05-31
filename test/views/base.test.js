@@ -299,6 +299,21 @@ describe(`${subject} event handling`, it => {
   });
 
   it('passes event to handlers bound to child nodes', t => {
+    const view = t.context.extend({
+      template: () => [ '<div class="foo" data-event-id="click-foo">Foo</div>'],
+      listeners: function () {
+        return { 'click click-foo': this.onFooClick };
+      },
+      onFooClick: sinon.spy()
+    }).render();
+
+    simulant.fire(view.node.getElementsByClassName('foo')[0], 'click');
+
+    t.true(view.onFooClick.args[0][0] instanceof Event);
+  });
+
+
+  it('binds listener to view instance context', t => {
     t.plan(1);
 
     const view = t.context.extend({
@@ -306,9 +321,9 @@ describe(`${subject} event handling`, it => {
       listeners: function () {
         return { 'click click-foo': this.onFooClick };
       },
-      onFooClick: sinon.spy((event) => {
-        t.true(event instanceof Event);
-      })
+      onFooClick: function () {
+        t.is(this, view);
+      }
     }).render();
 
     simulant.fire(view.node.getElementsByClassName('foo')[0], 'click');
