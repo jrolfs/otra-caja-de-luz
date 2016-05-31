@@ -20,7 +20,7 @@ test.beforeEach(t => {
     };
 
     ExtendedBase.prototype = Object.create(Base.prototype);
-    ExtendedBase.prototype.constructor = Base;
+    ExtendedBase.prototype.constructor = ExtendedBase;
 
     Object.assign(ExtendedBase.prototype, prototype);
 
