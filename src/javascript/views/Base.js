@@ -8,8 +8,9 @@ function Base(options) {
   options || (options = {});
 
   this.nodeName = options.nodeName || this.nodeName || 'div';
+  this.className = options.className;
+
   this.data = options.data || {};
-  this.children = [];
 
   this._handlers = [];
   this._children = [];
@@ -28,6 +29,8 @@ assign(Base.prototype, {
     if (this.node instanceof HTMLUnknownElement) {
       throw new Error('Invalid nodeName provided');
     }
+
+    if (this.className) this.node.className = this.className;
 
     return this;
   },

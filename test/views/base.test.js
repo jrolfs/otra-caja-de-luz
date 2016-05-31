@@ -72,6 +72,12 @@ describe(`${subject} initialization`, it => {
 
     t.true(/invalid nodeName/i.test(error.message));
   });
+
+  it('adds provided className to root node', t => {
+    const view = t.context.build({ className: 'my-view' });
+
+    t.true(view.node.className === 'my-view');
+  });
 });
 
 describe(`${subject} templating`, it => {
