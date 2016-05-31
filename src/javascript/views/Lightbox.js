@@ -9,6 +9,10 @@ var Lightbox = function(options) {
   this.next = options.next;
   this.previous = options.previous;
 
+  this.onBodyKeyup = this.onBodyKeyup.bind(this);
+
+  document.body.addEventListener('keyup', this.onBodyKeyup);
+
   Base.call(this, options);
 };
 
@@ -21,7 +25,8 @@ assign(Lightbox.prototype, {
   listeners: function () {
     return {
       'click previous': this.onPreviousClick,
-      'click next': this.onNextClick
+      'click next': this.onNextClick,
+      'click close': this.onCloseClick
     };
   },
 
@@ -33,15 +38,29 @@ assign(Lightbox.prototype, {
         '<div class="description">',
           '<p>', this.description, '</p>',
         '</div>',
-        '<button class="previous" data-event-id="previous">',
-        '<button class="next" data-event-id="next">',
-        '<button class="close" data-event-id="close">',
+        '<div class="previous-container">',
+          '<button class="previous" data-event-id="previous">Previous</button>',
+        '</div>',
+        '<div class="previous-container">',
+          '<button class="next" data-event-id="next">Next</button>',
+        '</div>',
+        '<button class="close" data-event-id="close"></button>',
       '</div>'
     ];
   },
 
+  remove: function () {
+    document.body.removeEventListener('keyup', this.onBodyKeyup);
+
+    Base.prototype.remove.call(this);
+  },
+
   //
   // Listeners
+  
+  onBodyKeyup: function (event) {
+    if (event.which === 27) this.trigger('close');
+  },
 
   onPreviousClick: function (event) {
     console.log('previous');
@@ -49,6 +68,10 @@ assign(Lightbox.prototype, {
 
   onNextClick: function (event) {
     console.log('next');
+  },
+
+  onCloseClick: function (event) {
+    this.trigger('close');
   }
 });
 

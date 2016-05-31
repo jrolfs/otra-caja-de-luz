@@ -9,6 +9,7 @@ var get = require('../utils/get');
 var Gallery = function(options) {
   var adapter = this.adapter = options.adapter;
 
+  this.lightbox = null
   this.loading = true;
   this.index = -1;
 
@@ -63,9 +64,9 @@ assign(Gallery.prototype, {
       this.bind(lightbox, 'prevous', this.onLightboxPrevious);
       this.bind(lightbox, 'next', this.onLightboxNext);
       this.bind(lightbox, 'close', this.onLightBoxClose);
-
-      document.body.appendChild(lightbox.render().node);
     }
+
+    document.body.appendChild(lightbox.render().node);
   },
 
   remove: function () {
@@ -89,6 +90,11 @@ assign(Gallery.prototype, {
 
   onImageOpen: function (data) {
     this.showLightbox(data);
+  },
+
+  onLightBoxClose: function () {
+    this.lightbox.remove();
+    this.lightbox = null;
   }
 });
 
