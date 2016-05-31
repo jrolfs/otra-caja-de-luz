@@ -1,4 +1,5 @@
 const gulp = require('gulp');
+const util = require('gulp-util');
 const plumber = require('gulp-plumber');
 const rename = require('gulp-rename');
 const stream = require('vinyl-source-stream');
@@ -27,7 +28,8 @@ gulp.task('javascript', () => {
     .pipe(stream(javascript))
     .pipe(rename('ocdl.js'))
     .pipe(gulp.dest(`${output}/javascript`))
-    .pipe(gulp.dest(`${example}/js`));
+    .pipe(gulp.dest(`${example}/js`))
+    .on('error', util.log);
 });
 
 gulp.task('styles', () => {
@@ -45,15 +47,11 @@ gulp.task('clean', () => {
 });
 
 gulp.task('serve', ['javascript', 'styles'], () => {
-  const reload = browserSync.reload;
-
   browserSync.init({ server: './example' });
 
-  gulp.task('javascript-watch', ['javascript'], reload);
-
-  gulp.watch(`${javascript}/**/*.js`, ['javascript-watch']);
+  gulp.watch(`${javascript}/**/*.js`, ['javascript']);
   gulp.watch(styles, ['styles']);
-  gulp.watch(`${example}/**/*.html`).on('change', reload);
+  gulp.watch(`${example}/**/*.+(html|js)`).on('change', browserSync.reload);
 });
 
 gulp.task('test', () => {

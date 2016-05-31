@@ -24,6 +24,7 @@
     "gulp-rename": "^1.2.2",
     "gulp-sass": "^2.3.1",
     "gulp-sourcemaps": "^1.6.0",
+    "gulp-util": "^3.0.7",
     "jsdom": "^9.1.0",
     "simulant": "^0.2.2",
     "sinon": "^1.17.4",
