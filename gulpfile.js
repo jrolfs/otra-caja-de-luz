@@ -24,12 +24,14 @@ gulp.task('javascript', () => {
     extensions: ['.js'],
     debug: true
   }).bundle()
-    .pipe(plumber())
+    .on('error', function (error) {
+      util.log(error);
+      this.emit('end');
+    })
     .pipe(stream(javascript))
     .pipe(rename('ocdl.js'))
     .pipe(gulp.dest(`${output}/javascript`))
-    .pipe(gulp.dest(`${example}/js`))
-    .on('error', util.log);
+    .pipe(gulp.dest(`${example}/js`));
 });
 
 gulp.task('styles', () => {
