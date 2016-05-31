@@ -20,8 +20,8 @@ assign(Lightbox.prototype, {
 
   listeners: function () {
     return {
-      click: { id: 'previous', listener: this.onPreviousClick },
-      click: { id: 'next', listener: this.onNextClick }
+      'click previous': this.onPreviousClick,
+      'click next': this.onNextClick
     };
   },
 

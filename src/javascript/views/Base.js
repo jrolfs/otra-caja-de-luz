@@ -45,18 +45,24 @@ assign(Base.prototype, {
       };
     };
 
-    for (var event in listeners) {
-      var descriptor = listeners[event];
+    for (var key in listeners) {
+      var event;
       var handler;
 
-      if (typeof descriptor === 'function') {
-        handler = descriptor.bind(this);
-      } else {
-        if (typeof descriptor.id !== 'string' || typeof descriptor.listener !== 'function') {
-          throw new Error('You must supply a valid event ID and listener when delegating events');
-        }
+      var listener = listeners[key];
 
-        handler = delegate.bind(this, descriptor.id, descriptor.listener)();
+      if (typeof listener !== 'function') {
+        throw new Error('You must supply a valid event listener');
+      }
+
+      if (key.match(/\w\s\w/)) {
+        var parts = key.split(/\s/);
+
+        event = parts[0];
+        handler = delegate.bind(this, parts[1], listener)();
+      } else {
+        event = key;
+        handler = listener.bind(this);
       }
 
       this.node.addEventListener(event, handler);

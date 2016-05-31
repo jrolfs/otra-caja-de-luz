@@ -254,8 +254,8 @@ describe(`${subject} event handling`, it => {
       ],
       listeners: function () {
         return {
-          click: { id: 'click-foo', listener: this.onFooClick },
-          mouseover: { id: 'hover-bar', listener: this.onBarMouseover }
+          'click click-foo': this.onFooClick,
+          'mouseover hover-bar': this.onBarMouseover
         };
       },
       onFooClick: sinon.spy(),
@@ -275,11 +275,36 @@ describe(`${subject} event handling`, it => {
     t.true(view.onBarMouseover.calledOnce);
   });
 
+  it('handles multiple events of same type on bound to child nodes', t => {
+    const view = t.context.extend({
+      template: () => [
+        '<div class="foo" data-event-id="click-foo">Foo</div>',
+        '<span class="bar" data-event-id="click-bar">Bar</span>'
+      ],
+      listeners: function () {
+        return {
+          'click click-foo': this.onFooClick,
+          'click click-bar': this.onBarClick
+        };
+      },
+      onFooClick: sinon.spy(),
+      onBarClick: sinon.spy()
+    }).render();
+
+    simulant.fire(view.node.getElementsByClassName('foo')[0], 'click');
+    simulant.fire(view.node.getElementsByClassName('bar')[0], 'click');
+
+    t.true(view.onFooClick.calledOnce);
+    t.true(view.onBarClick.calledOnce);
+  });
+
   it('passes event to handlers bound to child nodes', t => {
+    t.plan(1);
+
     const view = t.context.extend({
       template: () => [ '<div class="foo" data-event-id="click-foo">Foo</div>'],
       listeners: function () {
-        return { click: { id: 'click-foo', listener: this.onFooClick } };
+        return { 'click click-foo': this.onFooClick };
       },
       onFooClick: sinon.spy((event) => {
         t.true(event instanceof Event);
@@ -289,18 +314,10 @@ describe(`${subject} event handling`, it => {
     simulant.fire(view.node.getElementsByClassName('foo')[0], 'click');
   });
 
-  it('throws an error when event id is invalid', t => {
-    t.throws(() => {
-      t.context.extend({
-        listeners: function () { return { click: { id: null } }; }
-      });
-    }, /must.*valid.*event id/i);
-  });
-
   it('throws an error when event listener is invalid', t => {
     t.throws(() => {
       t.context.extend({
-        listeners: function () { return { click: { id: 'foo', listener: this.onFooClick } }; }
+        listeners: function () { return { click: null }; }
       });
     }, /must.*valid.*listener/i);
   });
