@@ -58,13 +58,13 @@ describe(`${subject} initialization`, it => {
   it('creates root node', t => {
     const view = t.context.build();
 
-    t.true(view.node instanceof window.HTMLDivElement);
+    t.true(view.node instanceof HTMLDivElement);
   });
 
   it('creates root node using custom "nodeName"', t => {
     const view = t.context.build({ nodeName: 'span' });
 
-    t.true(view.node instanceof window.HTMLSpanElement);
+    t.true(view.node instanceof HTMLSpanElement);
   });
 
   it('throws an error when custom "nodeName" is invalid', async t => {
@@ -83,8 +83,8 @@ describe(`${subject} templating`, it => {
 
     const [ node1, node2 ] = nodes;
 
-    t.true(node1 instanceof window.HTMLDivElement);
-    t.true(node2 instanceof window.HTMLSpanElement);
+    t.true(node1 instanceof HTMLDivElement);
+    t.true(node2 instanceof HTMLSpanElement);
 
     t.true(node1.className === 'foo');
     t.true(node2.className === 'bar');
@@ -263,7 +263,7 @@ describe(`${subject} event handling`, it => {
         return { click: { id: 'click-foo', listener: this.onFooClick } };
       },
       onFooClick: sinon.spy((event) => {
-        t.true(event instanceof window.Event);
+        t.true(event instanceof Event);
       })
     }).render();
 

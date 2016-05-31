@@ -1,6 +1,16 @@
 global.document = require('jsdom').jsdom('<body></body>');
 global.window = document.defaultView;
-global.navigator = window.navigator;
+
+[
+  'navigator',
+  'Event',
+  'XMLHttpRequest',
+  'HTMLUnknownElement',
+  'HTMLDivElement',
+  'HTMLSpanElement'
+].forEach(property => {
+  global[property] = window[property];
+});
 
 // Polyfill Element.dataset for jsdom :(
 // https://gist.github.com/dsheiko/37e4673cce20d5896510

@@ -25,7 +25,7 @@ assign(Base.prototype, {
   createNode: function () {
     this.node = document.createElement(this.nodeName);
 
-    if (this.node instanceof window.HTMLUnknownElement) {
+    if (this.node instanceof HTMLUnknownElement) {
       throw new Error('Invalid nodeName provided');
     }
 
