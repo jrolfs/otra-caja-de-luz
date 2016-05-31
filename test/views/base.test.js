@@ -73,7 +73,13 @@ describe(`${subject} initialization`, it => {
     t.true(/invalid nodeName/i.test(error.message));
   });
 
-  it('adds provided className to root node', t => {
+  it('adds className to root node', t => {
+    const view = t.context.extend({ className: 'my-view' });
+
+    t.true(view.node.className === 'my-view');
+  });
+
+  it('adds provided className option to root node', t => {
     const view = t.context.build({ className: 'my-view' });
 
     t.true(view.node.className === 'my-view');
@@ -108,6 +114,13 @@ describe(`${subject} templating`, it => {
     }).render();
 
     assertTemplate(t, view);
+  });
+
+  it('passes view instance to template', t => {
+    const template = sinon.spy((view) => []);
+    const view = t.context.extend({ template }).render();
+
+    t.true(template.calledWith(view));
   });
 
   it('interpolates data into template', t => {

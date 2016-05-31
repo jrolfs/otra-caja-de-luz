@@ -27,7 +27,17 @@ var escapeObject = function (data) {
 
   for (var key in data) {
     var value = data[key];
-    escapedData[key] = (typeof value === 'object') ? escapeObject(value) : escape(value);
+    var escapedValue;
+
+    if (Array.isArray(value)) {
+      escapedValue = value.map(function (item) { return escapeObject(item); });
+    } else if (typeof value === 'object') {
+      escapedValue = escapeObject(value);
+    } else {
+      escapedValue = escape(value);
+    }
+
+    escapedData[key] = escapedValue;
   }
 
   return escapedData;

@@ -8,7 +8,7 @@ function Base(options) {
   options || (options = {});
 
   this.nodeName = options.nodeName || this.nodeName || 'div';
-  this.className = options.className;
+  this.className = options.className || this.className;
 
   this.data = options.data || {};
 
@@ -109,15 +109,13 @@ assign(Base.prototype, {
   },
 
   render: function () {
-    var templateParts = this.template.call(escapeObject(this.data));
+    var templateParts = this.template.call(escapeObject(this.data), this);
 
     if (!Array.isArray(templateParts)) {
       throw new Error('Template function must return an array');
     }
 
-    this._children.forEach(function (child) {
-      this.unbind(child);
-    }, this);
+    this._children.forEach(function (child) { this.unbind(child); }, this);
     this.removeChildren();
 
     this.node.innerHTML = templateParts.join('');

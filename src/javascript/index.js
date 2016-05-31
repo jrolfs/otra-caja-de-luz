@@ -1,3 +1,4 @@
 module.exports = {
-  Gallery: require('./views/Gallery')
+  Gallery: require('./views/Gallery'),
+  imgur: require('./utils/adapters/imgur')
 };

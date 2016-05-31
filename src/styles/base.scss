@@ -1,3 +1,44 @@
 @import '../../node_modules/normalize.css/normalize';
+@import './mixins';
 
-body { background: lightgreen; }
+.ocdl-gallery {
+  margin: 40px 50px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+
+  .ocdl-image {
+    position: relative;
+    background: moccasin;
+    margin: 10px;
+    display: flex;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 1px 1px 5px 2px transparentize(black, 0.8);
+    transition: box-shadow ease-out 0.3s;
+
+    &:hover {
+      box-shadow: 2px 2px 5px 2px transparentize(black, 0.6);
+    }
+
+    img {
+      max-width: 160px;
+      min-width: 100px;
+      min-height: 100px;
+    }
+
+    .name {
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      padding: 3px;
+      font-size: 12px;
+      font-family: 'Helvetica', 'sans-serif';
+      text-align: center;
+      background: transparentize(white, 0.4);
+      @include truncate();
+    }
+  }
+}
