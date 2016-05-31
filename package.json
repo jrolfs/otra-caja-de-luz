@@ -15,12 +15,19 @@
   "devDependencies": {
     "ava-spec": "^1.0.1",
     "babel-preset-es2015-node": "^6.0.1",
+    "browser-sync": "^2.12.10",
+    "browserify": "^13.0.1",
+    "del": "^2.2.0",
     "gulp": "^3.9.1",
     "gulp-ava": "^0.12.0",
     "gulp-plumber": "^1.1.0",
+    "gulp-rename": "^1.2.2",
+    "gulp-sass": "^2.3.1",
+    "gulp-sourcemaps": "^1.6.0",
     "jsdom": "^9.1.0",
     "simulant": "^0.2.2",
-    "sinon": "^1.17.4"
+    "sinon": "^1.17.4",
+    "vinyl-source-stream": "^1.1.0"
   },
   "ava": {
     "source": [
@@ -38,6 +45,7 @@
   },
   "dependencies": {
     "es6-promise-polyfill": "^1.2.0",
+    "normalize.css": "^4.1.1",
     "object-assign": "^4.1.0"
   }
 }
