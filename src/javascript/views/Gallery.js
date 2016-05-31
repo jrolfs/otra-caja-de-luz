@@ -2,6 +2,7 @@ var assign = require('object-assign');
 
 var Base = require('./Base');
 var Image = require('./Image');
+var Lightbox = require('./Lightbox');
 var get = require('../utils/get');
 
 
@@ -46,6 +47,36 @@ assign(Gallery.prototype, {
     return this.render();
   },
 
+  showLightbox: function (data) {
+    var lightbox = this.lightbox;
+    var images = this.data.images;
+    var index = images.indexOf(data);
+    var next = index < images.length;
+    var previous = index > 0;
+
+    if (lightbox) {
+      assign(lightbox, { next: next, previous: previous, data: data });
+      lightbox.render();
+    } else {
+      lightbox = this.lightbox = new Lightbox({ next: next, previous: previous, data: data });
+
+      this.bind(lightbox, 'prevous', this.onLightboxPrevious);
+      this.bind(lightbox, 'next', this.onLightboxNext);
+      this.bind(lightbox, 'close', this.onLightBoxClose);
+
+      document.body.appendChild(lightbox.render().node);
+    }
+  },
+
+  remove: function () {
+    if (this.lightbox) {
+      this.unbind(this.lightbox);
+      this.lightbox.remove();
+    }
+
+    Base.prototype.remove.call(this);
+  },
+
   //
   // Listeners
 
@@ -57,7 +88,7 @@ assign(Gallery.prototype, {
   },
 
   onImageOpen: function (data) {
-    console.log(data);
+    this.showLightbox(data);
   }
 });
 
