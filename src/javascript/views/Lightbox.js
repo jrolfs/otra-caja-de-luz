@@ -39,10 +39,10 @@ assign(Lightbox.prototype, {
           '<p>', this.description, '</p>',
         '</div>',
         '<div class="previous-container">',
-          '<button class="previous" data-event-id="previous">Previous</button>',
+          '<button class="previous" data-event-id="previous"', (view.previous ? '' : ' disabled'), '>Previous</button>',
         '</div>',
         '<div class="previous-container">',
-          '<button class="next" data-event-id="next">Next</button>',
+          '<button class="next" data-event-id="next"', (view.next ? '' : ' disabled'), '>Next</button>',
         '</div>',
         '<button class="close" data-event-id="close"></button>',
       '</div>'
@@ -57,17 +57,17 @@ assign(Lightbox.prototype, {
 
   //
   // Listeners
-  
+
   onBodyKeyup: function (event) {
     if (event.which === 27) this.trigger('close');
   },
 
   onPreviousClick: function (event) {
-    console.log('previous');
+    this.trigger('previous');
   },
 
   onNextClick: function (event) {
-    console.log('next');
+    this.trigger('next');
   },
 
   onCloseClick: function (event) {

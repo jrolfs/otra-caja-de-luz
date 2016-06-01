@@ -51,8 +51,8 @@ assign(Gallery.prototype, {
   showLightbox: function (data) {
     var lightbox = this.lightbox;
     var images = this.data.images;
-    var index = images.indexOf(data);
-    var next = index < images.length;
+    var index = this.index = (this.index === -1) ? images.indexOf(data) : this.index;
+    var next = index < images.length - 1;
     var previous = index > 0;
 
     if (lightbox) {
@@ -61,12 +61,12 @@ assign(Gallery.prototype, {
     } else {
       lightbox = this.lightbox = new Lightbox({ next: next, previous: previous, data: data });
 
-      this.bind(lightbox, 'prevous', this.onLightboxPrevious);
+      this.bind(lightbox, 'previous', this.onLightboxPrevious);
       this.bind(lightbox, 'next', this.onLightboxNext);
       this.bind(lightbox, 'close', this.onLightBoxClose);
-    }
 
-    document.body.appendChild(lightbox.render().node);
+      document.body.appendChild(lightbox.render().node);
+    }
   },
 
   remove: function () {
@@ -92,9 +92,31 @@ assign(Gallery.prototype, {
     this.showLightbox(data);
   },
 
+  onLightboxPrevious: function () {
+    if (this.index - 1 >= 0) {
+      this.index--;
+    } else {
+      return;
+    }
+
+    this.showLightbox(this.data.images[this.index]);
+  },
+
+  onLightboxNext: function () {
+    if (this.index + 1 <= this.data.images.length) {
+      this.index++;
+    } else {
+      return;
+    }
+
+    this.showLightbox(this.data.images[this.index]);
+  },
+
   onLightBoxClose: function () {
     this.lightbox.remove();
     this.lightbox = null;
+
+    this.index = -1;
   }
 });
 
