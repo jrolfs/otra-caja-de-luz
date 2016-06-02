@@ -47,7 +47,7 @@ assign(Lightbox.prototype, {
           'Previous',
         '</button>',
         '</div>',
-        '<div class="previous-container">',
+        '<div class="next-container">',
         '<button class="next" data-event-id="next"', (view.next ? '' : ' disabled'), '>',
           'Next',
         '</button>',
