@@ -2,6 +2,7 @@
 @import './mixins';
 
 .ocdl-gallery {
+  position: relative;
   margin: 40px 50px;
   display: flex;
   flex-wrap: wrap;
@@ -15,12 +16,6 @@
     cursor: pointer;
     align-items: center;
     justify-content: center;
-    box-shadow: 1px 1px 5px 2px transparentize(black, 0.8);
-    transition: box-shadow ease-out 0.3s;
-
-    &:hover {
-      box-shadow: 2px 2px 5px 2px transparentize(black, 0.6);
-    }
 
     & > img {
       max-width: 160px;
@@ -107,7 +102,7 @@
       top: 10px;
       right: 10px;
 
-      &:after {
+      &:before {
         content: '\2715'
       }
     }
