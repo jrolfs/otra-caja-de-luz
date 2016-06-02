@@ -44,11 +44,16 @@ gulp.task('styles', () => {
     .pipe(browserSync.stream());
 });
 
-gulp.task('clean', () => {
-  return del(`${output}`);
+gulp.task('fonts', () => {
+  return gulp.src('./node_modules/font-awesome/fonts/**/*.{ttf,woff,eof,svg}')
+    .pipe(gulp.dest(`${example}/fonts`));
 });
 
-gulp.task('serve', ['javascript', 'styles'], () => {
+gulp.task('clean', () => {
+  return del(`${output}/**/*`);
+});
+
+gulp.task('serve', ['javascript', 'styles', 'fonts'], () => {
   browserSync.init({ server: './example' });
 
   gulp.watch(`${javascript}/**/*.js`, ['javascript']);
@@ -62,4 +67,4 @@ gulp.task('test', () => {
     .pipe(ava());
 });
 
-gulp.task('build', ['clean', 'styles', 'javascript']);
+gulp.task('build', ['clean', 'javascript', 'styles', 'fonts']);
