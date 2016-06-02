@@ -1,2 +1,55 @@
-$fa-font-path:"../../node_modules/font-awesome/fonts";
+$fa-font-path: "/fonts";
 @import "../../node_modules/font-awesome/scss/font-awesome";
+
+.ocdl-gallery {
+
+  a {
+    color: black;
+    text-decoration: none;
+
+    &:hover {
+    }
+  }
+
+  .ocdl-image {
+    overflow: hidden;
+    border-radius: 2px;
+    border: 5px transparentize(black, 0.8) solid;
+
+    .name {
+      transition: transform ease-in-out 0.3s;
+      transform: translateY(100%);
+    }
+
+    .external {
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      opacity: 0.5;
+      transition-properties: opacity, transform;
+      transition-duration: 0.25s;
+      transtion-easing-function: ease-in-out;
+      background: white;
+      padding: 2px 2px 1px 3px;
+      border-radius: 2px;
+      transform: translate(25px, -25px);
+      @extend .fa;
+      @extend .fa-external-link;
+
+      &:hover {
+        opacity: 1;
+      }
+    }
+
+    &:hover {
+      .name {
+        transform: translateY(0);
+      }
+
+      .external {
+        transform: translate(0, 0);
+      }
+    }
+  }
+
+}
