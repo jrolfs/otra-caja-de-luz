@@ -31,6 +31,7 @@ assign(Image.prototype, {
   // Listeners
 
   onClick: function (event) {
+    if (event.target.className.match(/external/)) return;
     this.trigger('open', this.data);
   }
 });
