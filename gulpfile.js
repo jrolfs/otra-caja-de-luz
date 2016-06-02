@@ -45,7 +45,7 @@ gulp.task('styles', () => {
 });
 
 gulp.task('fonts', () => {
-  return gulp.src('./node_modules/font-awesome/fonts/**/*.{ttf,woff,eof,svg}')
+  return gulp.src('./node_modules/font-awesome/fonts/**/*.{ttf,woff,woff2,eof,svg}')
     .pipe(gulp.dest(`${example}/fonts`));
 });
 
