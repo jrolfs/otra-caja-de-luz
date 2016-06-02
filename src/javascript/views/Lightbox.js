@@ -31,24 +31,27 @@ assign(Lightbox.prototype, {
   },
 
   template: function (view) {
-    var vertical = parseInt(this.height, 10) > parseInt(this.width, 10);
-
     return [
       '<div class="lightbox">',
         '<h2 class="name">', this.name, '</h2>',
-        '<div class="image', (vertical ? ' vertical' : ' horizontal'), '">',
-          '<img src="', this.url, '">',
+        '<div class="image">',
+          '<img',
+            ' src="', this.url, '"',
+            ' width="', this.width, '"',
+            ' height="', this.height, '">',
         '</div>',
         '<div class="description">',
           '<p>', this.description, '</p>',
         '</div>',
         '<div class="previous-container">',
-        '<button class="previous" data-event-id="previous"', (view.previous ? '' : ' disabled'), '>',
+        '<button class="previous" data-event-id="previous"',
+          (view.previous ? '' : ' disabled'), '>',
           'Previous',
         '</button>',
         '</div>',
         '<div class="next-container">',
-        '<button class="next" data-event-id="next"', (view.next ? '' : ' disabled'), '>',
+        '<button class="next" data-event-id="next"',
+          (view.next ? '' : ' disabled'), '>',
           'Next',
         '</button>',
         '</div>',
