@@ -1,5 +1,6 @@
 const gulp = require('gulp');
 const util = require('gulp-util');
+const copy = require('gulp-copy');
 const plumber = require('gulp-plumber');
 const rename = require('gulp-rename');
 const stream = require('vinyl-source-stream');
