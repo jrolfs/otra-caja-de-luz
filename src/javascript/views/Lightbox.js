@@ -67,7 +67,11 @@ assign(Lightbox.prototype, {
   // Listeners
 
   onBodyKeyup: function (event) {
-    if (event.which === 27) this.trigger('close');
+    switch (event.which) {
+      case 27: return this.trigger('close');
+      case 37: return this.trigger('previous');
+      case 39: return this.trigger('next');
+    }
   },
 
   onPreviousClick: function (event) {
